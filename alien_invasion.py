@@ -38,6 +38,9 @@ class AlienInvasion:
                     sys.exit()
             self.ship.update()
             self.bullets.update()
+
+            self.update_bullets()
+
             self.update_screen()
 
     def check_keydown_events(self, event):
@@ -67,8 +70,15 @@ class AlienInvasion:
 
     def fire_bullet(self):
         """Créé une nouvelle balle et la lance."""
-        new_bullet = Bullets(self)
-        self.bullets.add(new_bullet)
+        if len(self.bullets) < self.settings.max_bullets:
+            new_bullet = Bullets(self)
+            self.bullets.add(new_bullet)
+
+    def update_bullets(self):
+        """Efface les balles qui sortent du cadre du jeu. """
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
 
 
 if __name__ == '__main__':
